@@ -1,0 +1,18 @@
+{
+    "require": {
+        "symfony/var-dumper": "*",
+        "guzzlehttp/guzzle": "*",
+        "guzzlehttp/psr7": "*",
+        "laminas/laminas-httphandlerrunner": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.0"
+        }
+    }
+}
