@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Interfaces;
+namespace App\Interfaces;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
+use App\Aklon;
 
 interface AfterRequestMiddleware
 {

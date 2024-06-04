@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use Psr\Http\Message\RequestInterface;
-use Src\Aklon;
-use Src\Interfaces\BeforeRequestMiddleware;
+use App\Aklon;
+use App\Interfaces\BeforeRequestMiddleware;
 
 class SetAcceptEncoding implements BeforeRequestMiddleware
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
-use Src\Interfaces\AfterRequestMiddleware;
+use App\Aklon;
+use App\Interfaces\AfterRequestMiddleware;
 
 class Log implements AfterRequestMiddleware
 {

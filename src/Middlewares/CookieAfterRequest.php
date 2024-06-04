@@ -1,12 +1,12 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
-use Src\Helpers\Cookie;
-use Src\Interfaces\AfterRequestMiddleware;
+use App\Aklon;
+use App\Helpers\Cookie;
+use App\Interfaces\AfterRequestMiddleware;
 
 class CookieAfterRequest implements AfterRequestMiddleware
 {

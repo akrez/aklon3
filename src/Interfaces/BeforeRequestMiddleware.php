@@ -1,9 +1,9 @@
 <?php
 
-namespace Src\Interfaces;
+namespace App\Interfaces;
 
 use Psr\Http\Message\RequestInterface;
-use Src\Aklon;
+use App\Aklon;
 
 interface BeforeRequestMiddleware
 {

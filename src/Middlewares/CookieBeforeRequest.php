@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use Psr\Http\Message\RequestInterface;
-use Src\Aklon;
-use Src\Helpers\Cookie;
-use Src\Interfaces\BeforeRequestMiddleware;
+use App\Aklon;
+use App\Helpers\Cookie;
+use App\Interfaces\BeforeRequestMiddleware;
 
 class CookieBeforeRequest implements BeforeRequestMiddleware
 {

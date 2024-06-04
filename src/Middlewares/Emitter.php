@@ -1,12 +1,12 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
-use Src\Interfaces\AfterRequestMiddleware;
+use App\Aklon;
+use App\Interfaces\AfterRequestMiddleware;
 
 class Emitter implements AfterRequestMiddleware
 {

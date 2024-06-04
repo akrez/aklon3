@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Helpers;
+namespace App\Helpers;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
+use App\Aklon;
 
 class Cookie
 {

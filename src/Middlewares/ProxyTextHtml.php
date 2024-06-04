@@ -1,13 +1,13 @@
 <?php
 
-namespace Src\Middlewares;
+namespace App\Middlewares;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Src\Aklon;
-use Src\Interfaces\AfterRequestMiddleware;
-use Src\Traits\ProxyTextHtmlTrait;
+use App\Aklon;
+use App\Interfaces\AfterRequestMiddleware;
+use App\Traits\ProxyTextHtmlTrait;
 
 class ProxyTextHtml implements AfterRequestMiddleware
 {
