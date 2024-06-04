@@ -2,12 +2,12 @@
 
 namespace App\Middlewares;
 
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use App\Aklon;
 use App\Interfaces\AfterRequestMiddleware;
 use App\Traits\ProxyTextHtmlTrait;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ProxyTextHtml implements AfterRequestMiddleware
 {

@@ -2,9 +2,9 @@
 
 namespace App\Interfaces;
 
+use App\Aklon;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Aklon;
 
 interface AfterRequestMiddleware
 {

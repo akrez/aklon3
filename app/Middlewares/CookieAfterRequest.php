@@ -2,11 +2,11 @@
 
 namespace App\Middlewares;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use App\Aklon;
 use App\Helpers\Cookie;
 use App\Interfaces\AfterRequestMiddleware;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class CookieAfterRequest implements AfterRequestMiddleware
 {

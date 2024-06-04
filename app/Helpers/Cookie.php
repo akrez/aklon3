@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Aklon;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Aklon;
 
 class Cookie
 {

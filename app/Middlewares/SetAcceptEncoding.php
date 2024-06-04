@@ -2,9 +2,9 @@
 
 namespace App\Middlewares;
 
-use Psr\Http\Message\RequestInterface;
 use App\Aklon;
 use App\Interfaces\BeforeRequestMiddleware;
+use Psr\Http\Message\RequestInterface;
 
 class SetAcceptEncoding implements BeforeRequestMiddleware
 {

@@ -2,8 +2,8 @@
 
 namespace App\Interfaces;
 
-use Psr\Http\Message\RequestInterface;
 use App\Aklon;
+use Psr\Http\Message\RequestInterface;
 
 interface BeforeRequestMiddleware
 {

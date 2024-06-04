@@ -2,10 +2,10 @@
 
 namespace App\Middlewares;
 
-use Psr\Http\Message\RequestInterface;
 use App\Aklon;
 use App\Helpers\Cookie;
 use App\Interfaces\BeforeRequestMiddleware;
+use Psr\Http\Message\RequestInterface;
 
 class CookieBeforeRequest implements BeforeRequestMiddleware
 {

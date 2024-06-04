@@ -2,11 +2,11 @@
 
 namespace App\Middlewares;
 
+use App\Aklon;
+use App\Interfaces\AfterRequestMiddleware;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Aklon;
-use App\Interfaces\AfterRequestMiddleware;
 
 class Emitter implements AfterRequestMiddleware
 {
