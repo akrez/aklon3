@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Helpers;
+namespace App\Helpers;
 
-class Crypt
+class Encryption
 {
     public function __construct(private string $key)
     {
