@@ -1,23 +1,9 @@
 <?php
 
-namespace Src\Helpers;
+namespace App\Helpers;
 
 class Url
 {
-    public function __construct(private Crypt $crypt)
-    {
-    }
-
-    public function encrypt($url): string
-    {
-        return $this->crypt->encrypt($url);
-    }
-
-    public function decrypt($url): string
-    {
-        return $this->crypt->decrypt($url);
-    }
-
     public function parse(string $url, int $component = -1)
     {
         return parse_url($url, $component) + [
