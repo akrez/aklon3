@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Traits;
+namespace App\Traits;
 
-use Src\Aklon;
-use Src\Helpers\ContentType;
-use Src\Helpers\Utils;
+use App\Aklon;
+use App\Helpers\ContentType;
+use App\Helpers\Utils;
 
 trait ProxyTextHtmlTrait
 {
@@ -21,7 +21,7 @@ trait ProxyTextHtmlTrait
             if (Utils::startsWith($url, $types)) {
                 return $matches[0];
             }
-            $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+            $changed = $aklon->encryptUrl($url, $mainUrl);
 
             return str_replace($url, $changed, $matches[0]);
         }, $body);
@@ -31,14 +31,14 @@ trait ProxyTextHtmlTrait
             if (! $action) {
                 return '';
             }
-            $changed = $aklon->encryptToBaseUrl($action, $mainUrl);
+            $changed = $aklon->encryptUrl($action, $mainUrl);
 
             return str_replace($action, $changed, $matches[0]);
         }, $body);
 
         $body = preg_replace_callback('/content=(["\'])\d+\s*;\s*url=(.*?)\1/is', function ($matches) use ($aklon, $mainUrl) {
             $url = trim($matches[2]);
-            $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+            $changed = $aklon->encryptUrl($url, $mainUrl);
 
             return str_replace($url, $changed, $matches[0]);
         }, $body);
@@ -48,7 +48,7 @@ trait ProxyTextHtmlTrait
             if (Utils::startsWith($url, 'data:')) {
                 return $matches[0];
             }
-            $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+            $changed = $aklon->encryptUrl($url, $mainUrl);
 
             return str_replace($url, $changed, $matches[0]);
         }, $body);
@@ -61,7 +61,7 @@ trait ProxyTextHtmlTrait
                 if ($pos !== false) {
                     $url = substr($part, 0, $pos);
 
-                    $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+                    $changed = $aklon->encryptUrl($url, $mainUrl);
                     $src = str_replace($url, $changed, $src);
                 }
             }

@@ -1,20 +1,17 @@
 <?php
 
-namespace Src;
+namespace App;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\ServerRequest;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
-use Src\Helpers\Url;
 
 class Aklon
 {
-    public $encryptionPreferredSchema = 'https';
-
-    public function __construct(private Url $url, private $baseUrl)
-    {
+    public function __construct(
+        private Crypt $crypt
+    ) {
     }
 
     /**
@@ -23,10 +20,12 @@ class Aklon
      * @return [type]
      */
     public function handle(
-        ServerRequestInterface $request,
+        ServerRequestInterface $encryptedRequest,
         array $beforeRequestMiddlewares,
         array $afterRequestMiddlewares,
     ) {
+        $request = $this->crypt->decryptRequest($encryptedRequest);
+
         foreach ($beforeRequestMiddlewares as $beforeRequestMiddleware) {
             $request = $beforeRequestMiddleware->handle($this, $request);
         }
@@ -55,49 +54,18 @@ class Aklon
         }
     }
 
-    public function fromGlobals($url): ServerRequest
+    public function buildRequestFromGlobals(): ServerRequest
     {
-        return ServerRequest::fromGlobals()->withUri(new Uri($url));
+        return ServerRequest::fromGlobals();
     }
 
-    public function decryptFromBaseUrl($baseUrl)
+    public function isEncrypted(ServerRequestInterface $request)
     {
-        $parsedBaseUrl = $this->url->parse($baseUrl);
-        if (! $parsedBaseUrl['query']) {
-            return null;
-        }
-
-        $parsedBaseUrlQuery = [];
-        parse_str($parsedBaseUrl['query'], $parsedBaseUrlQuery);
-        if (! isset($parsedBaseUrlQuery['q'])) {
-            return null;
-        }
-
-        return $this->url->decrypt($parsedBaseUrlQuery['q']);
+        return $this->crypt->isEncrypted($request);
     }
 
-    public function encryptToBaseUrl($url, $mainUrl = '')
+    public function encryptUrl($url, $mainUrl = '')
     {
-        if ($mainUrl) {
-            $url = $this->url->convertRelativeToAbsoluteUrl($mainUrl, $url);
-        }
-
-        if (
-            strpos($url, '//') === false
-            and strpos($url, 'https://') === false
-            and strpos($url, 'http://') === false
-        ) {
-            $url = ($this->encryptionPreferredSchema.'://'.$url);
-        }
-
-        $encryptedUrl = $this->url->encrypt($url);
-
-        $parsedBaseUrl = $this->url->parse($this->baseUrl);
-        if ($parsedBaseUrl['query']) {
-            $parsedBaseUrl['query'] = $parsedBaseUrl['query'].'&';
-        }
-        $parsedBaseUrl['query'] .= 'q='.$encryptedUrl;
-
-        return $this->url->unparse($parsedBaseUrl);
+        return $this->crypt->encryptUrl($url, $mainUrl);
     }
 }

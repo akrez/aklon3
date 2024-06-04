@@ -1,9 +1,9 @@
 <?php
 
-namespace Src\Traits;
+namespace App\Traits;
 
-use Src\Aklon;
-use Src\Helpers\ContentType;
+use App\Aklon;
+use App\Helpers\ContentType;
 
 trait ProxyTextCssTrait
 {
@@ -16,14 +16,14 @@ trait ProxyTextCssTrait
     {
         $body = preg_replace_callback('/@import\s+([\'"])(.*?)\1(?![^;]*url)/ix', function ($matches) use ($aklon, $mainUrl) {
             $url = trim($matches[2]);
-            $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+            $changed = $aklon->encryptUrl($url, $mainUrl);
 
             return str_replace($url, $changed, $matches[0]);
         }, $body);
 
         $body = preg_replace_callback('/url\s*\(\s*([\'"]?)(.*?)\1\s*\)/ix', function ($matches) use ($aklon, $mainUrl) {
             $url = trim($matches[2]);
-            $changed = $aklon->encryptToBaseUrl($url, $mainUrl);
+            $changed = $aklon->encryptUrl($url, $mainUrl);
 
             return str_replace($url, $changed, $matches[0]);
         }, $body);
