@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\Url;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\ServerRequest;
@@ -9,9 +10,16 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Aklon
 {
-    public function __construct(
-        private Crypt $crypt
-    ) {
+    private string $baseUrl;
+
+    public function __construct(string $baseUrl)
+    {
+        $this->baseUrl = Url::trim($baseUrl);
+    }
+
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
     }
 
     /**
@@ -20,12 +28,10 @@ class Aklon
      * @return [type]
      */
     public function handle(
-        ServerRequestInterface $encryptedRequest,
+        ServerRequestInterface $request,
         array $beforeRequestMiddlewares,
         array $afterRequestMiddlewares,
     ) {
-        $request = $this->crypt->decryptRequest($encryptedRequest);
-
         foreach ($beforeRequestMiddlewares as $beforeRequestMiddleware) {
             $request = $beforeRequestMiddleware->handle($this, $request);
         }
@@ -57,15 +63,5 @@ class Aklon
     public function buildRequestFromGlobals(): ServerRequest
     {
         return ServerRequest::fromGlobals();
-    }
-
-    public function isEncrypted(ServerRequestInterface $request)
-    {
-        return $this->crypt->isEncrypted($request);
-    }
-
-    public function encryptUrl($url, $mainUrl = '')
-    {
-        return $this->crypt->encryptUrl($url, $mainUrl);
     }
 }
