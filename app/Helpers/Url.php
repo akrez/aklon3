@@ -4,7 +4,12 @@ namespace App\Helpers;
 
 class Url
 {
-    public function parse(string $url, int $component = -1)
+    public static function trim(string $url)
+    {
+        return trim($url, " \n\r\t\v\0/");
+    }
+
+    public static function parse(string $url, int $component = -1)
     {
         return parse_url($url, $component) + [
             'scheme' => null,
@@ -18,7 +23,7 @@ class Url
         ];
     }
 
-    public function unparse(array $parsed): string
+    public static function unparse(array $parsed): string
     {
         $parsed = $parsed + [
             'scheme' => null,
@@ -59,15 +64,15 @@ class Url
         return ($parsed['host'] ? $scheme.$userPass.$parsed['host'].$port : '').$path.$query.$fragment;
     }
 
-    public function convertRelativeToAbsoluteUrl($absolute, $path)
+    public static function convertRelativeToAbsoluteUrl($absolute, $path)
     {
-        $absoluteParsed = $this->parse($absolute);
-        $relativeParsed = $this->parse($path);
+        $absoluteParsed = static::parse($absolute);
+        $relativeParsed = static::parse($path);
         $absolutePath = '';
 
         if (isset($relativeParsed['path']) && isset($absoluteParsed['scheme']) && substr($relativeParsed['path'], 0, 2) === '//' && ! isset($relativeParsed['scheme'])) {
             $path = $absoluteParsed['scheme'].':'.$path;
-            $relativeParsed = $this->parse($path);
+            $relativeParsed = static::parse($path);
         }
 
         if (isset($relativeParsed['host'])) {
