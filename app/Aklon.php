@@ -3,18 +3,25 @@
 namespace App;
 
 use App\Helpers\Url;
+use App\Interfaces\AfterRequestMiddleware;
+use App\Interfaces\BeforeRequestMiddleware;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class Aklon
 {
-    private string $baseUrl;
-
-    public function __construct(string $baseUrl)
-    {
-        $this->baseUrl = Url::trim($baseUrl);
+    public function __construct(
+        private ?string $baseUrl = null,
+        private ?int $timeout = null
+    ) {
+        $this->baseUrl = Url::trim($baseUrl === null ? static::suggestBaseUrl() : $baseUrl);
+        $this->timeout = Url::trim($timeout === null ? static::suggestTimeout() : $timeout);
     }
 
     public function getBaseUrl(): string
@@ -36,10 +43,21 @@ class Aklon
             $request = $beforeRequestMiddleware->handle($this, $request);
         }
 
+        $response = $this->send($request);
+
+        foreach ($afterRequestMiddlewares as $afterRequestMiddleware) {
+            $response = $afterRequestMiddleware->handle($this, $request, $response);
+        }
+    }
+
+    private function send($request)
+    {
+        $timeout = $this->timeout;
+
         $client = new Client([
             'curl' => [
-                CURLOPT_CONNECTTIMEOUT => 10,
-                CURLOPT_TIMEOUT => 0,
+                CURLOPT_CONNECTTIMEOUT => $timeout,
+                CURLOPT_TIMEOUT => $timeout,
                 // don't bother with ssl
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_SSL_VERIFYHOST => false,
@@ -47,21 +65,42 @@ class Aklon
                 CURLOPT_FOLLOWLOCATION => false,
                 CURLOPT_AUTOREFERER => false,
             ],
+            'timeout' => $timeout,
+            'read_timeout' => $timeout,
+            'connect_timeout' => $timeout,
         ]);
 
         try {
-            $response = $client->send($request);
+            return $client->send($request);
         } catch (ClientException $e) {
-            $response = $e->getResponse();
-        }
-
-        foreach ($afterRequestMiddlewares as $afterRequestMiddleware) {
-            $response = $afterRequestMiddleware->handle($this, $request, $response);
+            return $e->getResponse();
+        } catch (ServerException $e) {
+            return $e->getResponse();
+        } catch (Throwable $e) {
+            return new Response(500, [], json_encode((array) $e), 1.1, 'Internal Server Throwable Error');
+        } catch (Exception $e) {
+            return new Response(500, [], json_encode((array) $e), 1.1, 'Internal Server Exception Error');
         }
     }
 
-    public function buildRequestFromGlobals(): ServerRequest
+    public static function buildRequestFromGlobals(): ServerRequest
     {
         return ServerRequest::fromGlobals();
+    }
+
+    public static function suggestBaseUrl(): string
+    {
+        $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
+        $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
+        if ($script['basename'] !== 'index.php') {
+            $baseUrl = $baseUrl.'/'.$script['basename'];
+        }
+
+        return $baseUrl;
+    }
+
+    public static function suggestTimeout(): string
+    {
+        return ini_get('max_execution_time') ?? 60;
     }
 }
