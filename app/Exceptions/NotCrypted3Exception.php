@@ -4,6 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 
-class NotCryptedException extends Exception
+class NotCrypted3Exception extends Exception
 {
 }
