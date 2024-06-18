@@ -3,7 +3,7 @@
 namespace App\Middlewares;
 
 use App\Aklon;
-use App\Exceptions\NotCryptedException;
+use App\Exceptions\NotCrypted2Exception;
 use App\Helpers\Crypt2;
 use App\Helpers\Encryption2;
 use App\Interfaces\BeforeRequestMiddleware;
@@ -22,7 +22,7 @@ class Crypt2BeforeRequest implements BeforeRequestMiddleware
 
         $decryptedUrl = $crypt->decryptUrl(strval($request->getUri()));
         if (! $decryptedUrl) {
-            throw new NotCryptedException();
+            throw new NotCrypted2Exception();
         }
 
         return $request->withUri(new Uri($decryptedUrl));

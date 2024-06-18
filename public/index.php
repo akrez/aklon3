@@ -1,6 +1,7 @@
 <?php
 
 use App\Aklon;
+use App\Exceptions\NotCrypted2Exception;
 use App\Exceptions\NotCrypted3Exception;
 use App\Middlewares\CookieAfterRequest;
 use App\Middlewares\CookieBeforeRequest;
@@ -29,6 +30,8 @@ try {
         new Log,
         new Emitter,
     ]);
+} catch (NotCrypted2Exception $e) {
+    require_once '../view/form2.php';
 } catch (NotCrypted3Exception $e) {
     require_once '../view/form3.php';
 } catch (\Exception $e) {
