@@ -3,14 +3,18 @@
 namespace App\Helpers;
 
 use App\Interfaces\Crypt;
+use App\Interfaces\Encryption;
 
 class Crypt2 implements Crypt
 {
     private string $baseUrl;
 
-    public function __construct(string $baseUrl)
+    private Encryption $encryption;
+
+    public function __construct(string $baseUrl, Encryption $encryption)
     {
         $this->baseUrl = Url::trim($baseUrl);
+        $this->encryption = $encryption;
     }
 
     public function getBaseUrl(): string
@@ -25,18 +29,18 @@ class Crypt2 implements Crypt
 
     public function decryptUrl(string $encryptedUrl): ?string
     {
-        $parsedBaseUrl = Url::parse($baseUrl);
-        if (!$parsedBaseUrl['query']) {
+        $parsedBaseUrl = Url::parse($this->baseUrl);
+        if (! $parsedBaseUrl['query']) {
             return null;
         }
 
         $parsedBaseUrlQuery = [];
         parse_str($parsedBaseUrl['query'], $parsedBaseUrlQuery);
-        if (!isset($parsedBaseUrlQuery['q'])) {
+        if (! isset($parsedBaseUrlQuery['q'])) {
             return null;
         }
 
-        return Url::decrypt($parsedBaseUrlQuery['q']);
+        return $this->encryption->decrypt($parsedBaseUrlQuery['q']);
     }
 
     public function encryptUrl(string $url, ?string $mainUrl = null)
@@ -50,10 +54,10 @@ class Crypt2 implements Crypt
             and strpos($url, 'https://') === false
             and strpos($url, 'http://') === false
         ) {
-            $url = ($this->encryptionPreferredSchema.'://'.$url);
+            $url = (static::getPreferredSchema().'://'.$url);
         }
 
-        $encryptedUrl = Url::encrypt($url);
+        $encryptedUrl = $this->encryption->encrypt($url);
 
         $parsedBaseUrl = Url::parse($this->baseUrl);
         if ($parsedBaseUrl['query']) {

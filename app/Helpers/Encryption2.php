@@ -2,20 +2,22 @@
 
 namespace App\Helpers;
 
-class Encryption2
+use App\Interfaces\Encryption;
+
+class Encryption2 implements Encryption
 {
     public function __construct(private string $key)
     {
     }
 
-    public function encrypt($str)
+    public function encrypt($str): string
     {
         $str = $this->strRotPass($str, $this->key);
 
         return $this->base64Encode($str);
     }
 
-    public function decrypt($str)
+    public function decrypt($str): string
     {
         $str = $this->base64Decode($str);
 
