@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
+use App\Interfaces\Crypt;
+
 class ProxyTextHtml
 {
     public function __construct(
-        public Crypt3 $crypt
+        public Crypt $crypt
     ) {
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Helpers;
 
-class Crypt3
+use App\Interfaces\Crypt;
+
+class Crypt3 implements Crypt
 {
     private string $baseUrl;
 
