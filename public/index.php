@@ -13,11 +13,11 @@ use App\Middlewares\SetAcceptEncoding;
 
 require_once '../vendor/autoload.php';
 
-$baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
+$baseUrl = Aklon::suggestBaseUrl();
 
 $aklon = new Aklon($baseUrl);
 
-$request = $aklon->buildRequestFromGlobals();
+$request = Aklon::buildRequestFromGlobals();
 
 try {
     $aklon->handle($request, [
