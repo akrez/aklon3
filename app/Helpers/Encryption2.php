@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class Encryption
+class Encryption2
 {
     public function __construct(private string $key)
     {
