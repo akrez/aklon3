@@ -12,7 +12,7 @@ class Url
             $baseUrl = $baseUrl.'/'.$script['basename'];
         }
 
-        return $baseUrl;
+        return self::trim($baseUrl);
     }
 
     public static function trim(string $url)
