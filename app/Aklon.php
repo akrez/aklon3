@@ -17,11 +17,9 @@ use Throwable;
 class Aklon
 {
     public function __construct(
-        private ?string $baseUrl = null,
-        private ?int $timeout = null
+        private ?string $baseUrl = null
     ) {
         $this->baseUrl = Url::trim($baseUrl === null ? static::suggestBaseUrl() : $baseUrl);
-        $this->timeout = Url::trim($timeout === null ? static::suggestTimeout() : $timeout);
     }
 
     public function getBaseUrl(): string
@@ -32,13 +30,13 @@ class Aklon
     /**
      * @param  BeforeRequestMiddleware[]  $beforeRequestMiddlewares
      * @param  AfterRequestMiddleware[]  $afterRequestMiddlewares
-     * @return [type]
+     * @return void
      */
     public function handle(
         ServerRequestInterface $request,
         array $beforeRequestMiddlewares,
         array $afterRequestMiddlewares,
-    ) {
+    ): void {
         foreach ($beforeRequestMiddlewares as $beforeRequestMiddleware) {
             $request = $beforeRequestMiddleware->handle($this, $request);
         }
@@ -50,11 +48,11 @@ class Aklon
         }
     }
 
-    private function send($request)
+    private function send($request, $clientConfig = [])
     {
-        $timeout = $this->timeout;
+        $timeout = ini_get('max_execution_time') ?? 60;
 
-        $client = new Client([
+        $defaultConfig = [
             'curl' => [
                 CURLOPT_CONNECTTIMEOUT => $timeout,
                 CURLOPT_TIMEOUT => $timeout,
@@ -68,7 +66,12 @@ class Aklon
             'timeout' => $timeout,
             'read_timeout' => $timeout,
             'connect_timeout' => $timeout,
-        ]);
+        ];
+
+        $client = new Client(array_replace_recursive(
+            $defaultConfig,
+            $clientConfig
+        ));
 
         try {
             return $client->send($request);
@@ -88,19 +91,14 @@ class Aklon
         return ServerRequest::fromGlobals();
     }
 
-    public static function suggestBaseUrl(): string
+    private static function suggestBaseUrl(): string
     {
         $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
-        $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
+        $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $script['dirname'];
         if ($script['basename'] !== 'index.php') {
-            $baseUrl = $baseUrl.'/'.$script['basename'];
+            $baseUrl = $baseUrl . '/' . $script['basename'];
         }
 
         return $baseUrl;
-    }
-
-    public static function suggestTimeout(): string
-    {
-        return ini_get('max_execution_time') ?? 60;
     }
 }
