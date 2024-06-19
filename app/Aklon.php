@@ -19,7 +19,7 @@ class Aklon
     public function __construct(
         private ?string $baseUrl = null
     ) {
-        $this->baseUrl = Url::trim($baseUrl === null ? static::suggestBaseUrl() : $baseUrl);
+        $this->baseUrl = Url::trim($baseUrl === null ? Url::suggestBaseUrl() : $baseUrl);
     }
 
     public function getBaseUrl(): string
@@ -88,16 +88,5 @@ class Aklon
     public static function buildRequestFromGlobals(): ServerRequest
     {
         return ServerRequest::fromGlobals();
-    }
-
-    private static function suggestBaseUrl(): string
-    {
-        $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
-        $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
-        if ($script['basename'] !== 'index.php') {
-            $baseUrl = $baseUrl.'/'.$script['basename'];
-        }
-
-        return $baseUrl;
     }
 }

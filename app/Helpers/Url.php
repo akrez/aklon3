@@ -4,6 +4,17 @@ namespace App\Helpers;
 
 class Url
 {
+    public static function suggestBaseUrl(): string
+    {
+        $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
+        $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
+        if ($script['basename'] !== 'index.php') {
+            $baseUrl = $baseUrl.'/'.$script['basename'];
+        }
+
+        return $baseUrl;
+    }
+
     public static function trim(string $url)
     {
         return trim($url, " \n\r\t\v\0/");
