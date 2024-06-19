@@ -1,8 +1,7 @@
 <?php
 
 use App\Aklon;
-use App\Exceptions\NotCrypted2Exception;
-use App\Exceptions\NotCrypted3Exception;
+use App\Exceptions\NotCryptedException;
 use App\Middlewares\CookieAfterRequest;
 use App\Middlewares\CookieBeforeRequest;
 use App\Middlewares\Crypt2AfterRequest;
@@ -30,11 +29,8 @@ try {
         new Log,
         new Emitter,
     ]);
-} catch (NotCrypted2Exception $e) {
+} catch (NotCryptedException $e) {
     $baseUrl = $aklon->getBaseUrl();
-    require_once '../view/form2.php';
-} catch (NotCrypted3Exception $e) {
-    $baseUrl = $aklon->getBaseUrl();
-    require_once '../view/form3.php';
+    require_once '../view/form-crypt2.php';
 } catch (\Exception $e) {
 }

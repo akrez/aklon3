@@ -3,7 +3,7 @@
 namespace App\Middlewares;
 
 use App\Aklon;
-use App\Exceptions\NotCrypted3Exception;
+use App\Exceptions\NotCryptedException;
 use App\Helpers\Crypt3;
 use App\Interfaces\BeforeRequestMiddleware;
 use GuzzleHttp\Psr7\Uri;
@@ -17,7 +17,7 @@ class Crypt3BeforeRequest implements BeforeRequestMiddleware
 
         $decryptedUrl = $crypt->decryptUrl(strval($request->getUri()));
         if (! $decryptedUrl) {
-            throw new NotCrypted3Exception();
+            throw new NotCryptedException();
         }
 
         return $request->withUri(new Uri($decryptedUrl));
