@@ -30,7 +30,6 @@ class Aklon
     /**
      * @param  BeforeRequestMiddleware[]  $beforeRequestMiddlewares
      * @param  AfterRequestMiddleware[]  $afterRequestMiddlewares
-     * @return void
      */
     public function handle(
         ServerRequestInterface $request,
@@ -94,9 +93,9 @@ class Aklon
     private static function suggestBaseUrl(): string
     {
         $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
-        $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $script['dirname'];
+        $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
         if ($script['basename'] !== 'index.php') {
-            $baseUrl = $baseUrl . '/' . $script['basename'];
+            $baseUrl = $baseUrl.'/'.$script['basename'];
         }
 
         return $baseUrl;

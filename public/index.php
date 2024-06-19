@@ -6,8 +6,6 @@ use App\Middlewares\CookieAfterRequest;
 use App\Middlewares\CookieBeforeRequest;
 use App\Middlewares\Crypt2AfterRequest;
 use App\Middlewares\Crypt2BeforeRequest;
-use App\Middlewares\Crypt3AfterRequest;
-use App\Middlewares\Crypt3BeforeRequest;
 use App\Middlewares\Emitter;
 use App\Middlewares\Log;
 use App\Middlewares\SetAcceptEncoding;
