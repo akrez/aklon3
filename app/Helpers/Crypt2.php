@@ -29,7 +29,7 @@ class Crypt2 implements Crypt
 
     public function decryptUrl(string $encryptedUrl): ?string
     {
-        $parsedBaseUrl = Url::parse($this->baseUrl);
+        $parsedBaseUrl = Url::parse($encryptedUrl);
         if (! $parsedBaseUrl['query']) {
             return null;
         }
