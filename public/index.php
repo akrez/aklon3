@@ -18,4 +18,4 @@ if (isset($_GET['url']) and $url = $_GET['url']) {
     return header('Location: ' . $encryptedUrl);
 }
 
-require_once '../view/crypt2.php';
+require_once BASE_PATH . '/view/crypt2.php';
