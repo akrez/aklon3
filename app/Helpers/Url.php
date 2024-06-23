@@ -9,7 +9,7 @@ class Url
         $script = pathinfo($_SERVER['SCRIPT_NAME']) + ['dirname' => '', 'basename' => ''];
         $baseUrl = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$script['dirname'];
         if ($script['basename'] !== 'index.php') {
-            $baseUrl = $baseUrl.'/'.$script['basename'];
+            $baseUrl = self::trim($baseUrl).'/'.$script['basename'];
         }
 
         return self::trim($baseUrl);
