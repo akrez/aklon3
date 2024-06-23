@@ -11,7 +11,7 @@ use App\Middlewares\Log;
 use App\Middlewares\SetAcceptEncoding;
 
 require_once '../config.php';
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once BASE_PATH.'/vendor/autoload.php';
 
 $aklon = new Aklon();
 
