@@ -13,8 +13,8 @@ class Emitter implements AfterRequestMiddleware
     public function handle(Aklon $aklon, RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $response = $response
-            ->withoutHeader('Connection')
-            ->withoutHeader('Keep-Alive')
+            // ->withoutHeader('Connection')
+            // ->withoutHeader('Keep-Alive')
             ->withoutHeader('Transfer-Encoding');
 
         $emitter = new SapiStreamEmitter();
