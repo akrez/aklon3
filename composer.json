@@ -3,6 +3,7 @@
         "symfony/var-dumper": "*",
         "guzzlehttp/guzzle": "*",
         "guzzlehttp/psr7": "*",
+        "laminas/laminas-httphandlerrunner": "*",
         "httpsoft/http-emitter": "*"
     },
     "autoload": {
