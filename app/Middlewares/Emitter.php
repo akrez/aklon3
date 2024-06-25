@@ -4,7 +4,7 @@ namespace App\Middlewares;
 
 use App\Aklon;
 use App\Interfaces\AfterRequestMiddleware;
-use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use HttpSoft\Emitter\SapiEmitter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,7 +17,7 @@ class Emitter implements AfterRequestMiddleware
             ->withoutHeader('Keep-Alive')
             ->withoutHeader('Transfer-Encoding');
 
-        $emitter = new SapiStreamEmitter();
+        $emitter = new SapiEmitter();
         $emitter->emit($response);
 
         return $response;
