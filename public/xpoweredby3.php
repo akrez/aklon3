@@ -13,6 +13,8 @@ require_once BASE_PATH.'/vendor/autoload.php';
 try {
     $aklon = new Aklon();
 
+    $request = Aklon::buildRequestFromGlobals();
+
     $XPoweredBy = explode(' ', implode('', $request->getHeader('X-Powered-By')), 3);
     if (count($XPoweredBy) !== 3) {
         throw new NotCryptedException();

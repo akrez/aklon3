@@ -8,10 +8,12 @@ use App\Middlewares\SetAcceptEncoding;
 use GuzzleHttp\Psr7\Uri;
 
 require_once '../aklon2.core/config.php';
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once BASE_PATH.'/vendor/autoload.php';
 
 try {
     $aklon = new Aklon();
+
+    $request = Aklon::buildRequestFromGlobals();
 
     $XPoweredBy = implode('', $request->getHeader('X-Powered-By'));
     if (empty($XPoweredBy)) {
