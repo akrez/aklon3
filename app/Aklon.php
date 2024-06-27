@@ -32,7 +32,7 @@ class Aklon
      * @param  AfterRequestMiddleware[]  $afterRequestMiddlewares
      */
     public function handle(
-        ServerRequestInterface $request,
+        $request,
         array $beforeRequestMiddlewares,
         array $afterRequestMiddlewares,
     ): void {
